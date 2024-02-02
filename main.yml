@@ -1,23 +1,11 @@
-- name: LEMP Compile Nginx + PHP-FPM From Source + Mariadb + Wordpress
+- name: lunar commerce create vhost
   hosts: all
   become: yes
   become_method: sudo
   
   roles:
-    - Dependencies
-    - Nginx
     - Vhost
     - PHP-FPM
-    - Mariadb
-    - Wordpress
-    #- Filebeat
-    #- Remove
-    - Addon-services
-    - SSL-Snap
-    - Rclone
-
-  tasks:
-    - name: reboot all server
-      reboot:
-        reboot_timeout: 3600
+    - Mysql
+    - Lunar
 

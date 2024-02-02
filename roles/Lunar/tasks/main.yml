@@ -58,7 +58,7 @@
 - name: Change file ownership, group and permissions
   file:
     path: /var/spool/cron/crontabs/{{ user_domain }}
-    owner: {{ user_domain }}
+    owner: '{{ user_domain }}'
     group: crontab
     mode: '0600'
   when: check_users_result.stdout != "1"
