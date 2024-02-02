@@ -81,3 +81,34 @@
     enabled: true
   when: check_users_result.stdout != "1"
   tags: lunar
+
+- name: update register email
+  shell: /usr/bin/certbot register -m caotritran.14@gmail.com --agree-tos
+  ignore_errors: true
+  tags: lunar
+
+- name: stop nginx
+  systemd:
+    name: nginx
+    state: stopped
+  tags: lunar
+
+- name: make sure nginx stopped
+  shell: sudo ps aux | grep nginx | grep -v grep | awk '{print $2}' | xargs kill -9
+  tags: lunar
+
+- name: request certificate
+  shell: /usr/bin/certbot --nginx -d '{{ server_name }}' --force-renewal
+  register: result
+  tags: lunar
+  ignore_errors: true
+
+- name: make sure nginx stopped
+  shell: sudo ps aux | grep nginx | grep -v grep | awk '{print $2}' | xargs kill -9
+  tags: lunar
+
+- name: start nginx
+  systemd:
+    name: nginx
+    state: started
+  tags: lunar
