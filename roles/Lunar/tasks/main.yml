@@ -1,0 +1,83 @@
+---
+- name: clone source lunar commerce
+  git:
+    repo: git@github.com:swebvn/lucommerce.git
+    dest: /home/{{ user_domain }}/domains/{{ server_name }}/public_html/
+  when: check_users_result.stdout != "1"
+  tags: lunar
+
+- name: copy env file
+  template: src=env.j2 dest=/home/{{ user_domain }}/domains/{{ server_name }}/public_html/.env
+  when: check_users_result.stdout != "1"
+  tags: lunar
+
+- name: Run composer install
+  shell: composer install --no-dev --optimize-autoloader --no-ansi --no-interaction
+  args:
+    chdir: /home/{{ user_domain }}/domains/{{ server_name }}/public_html/
+  when: check_users_result.stdout == "1"
+  tags: lunar
+
+- name: gen unique key
+  shell: php artisan key:generate
+  args:
+    chdir: /home/{{ user_domain }}/domains/{{ server_name }}/public_html/
+  when: check_users_result.stdout == "1"
+  tags: lunar
+
+- name: Run artisan migrate
+  shell: php artisan migrate --seed --force
+  args:
+    chdir: /home/{{ user_domain }}/domains/{{ server_name }}/public_html/
+  when: check_users_result.stdout == "1"
+  tags: lunar
+
+- name: Run artisan storage
+  shell: php artisan storage:link
+  args:
+    chdir: /home/{{ user_domain }}/domains/{{ server_name }}/public_html/
+  tags: lunar
+
+- name: Run pnpm install and build
+  shell: pnpm install && pnpm build
+  args:
+    chdir: /home/{{ user_domain }}/domains/{{ server_name }}/public_html/
+  when: check_users_result.stdout == "1"
+  tags: lunar
+
+- name: chown user
+  shell: chown {{ user_domain }}:{{ group_domain }} -hR /home/{{ user_domain }}/domains/{{ server_name }}/public_html/*
+  when: check_users_result.stdout == "1"
+  tags: lunar
+
+- name: create crontab with owner by user
+  shell: echo "* * * * * php /home/{{ user_domain }}/domains/{{ server_name }}/public_html/artisan schedule >> /dev/null 2>&1" > /var/spool/cron/crontabs/{{ user_domain }}
+  when: check_users_result.stdout != "1"
+  tags: lunar
+
+- name: Change file ownership, group and permissions
+  file:
+    path: /var/spool/cron/crontabs/{{ user_domain }}
+    owner: {{ user_domain }}
+    group: crontab
+    mode: '0600'
+  when: check_users_result.stdout != "1"
+  tags: lunar
+
+- name: create horizon systemd
+  template: src=horizon.service.j2 dest=/etc/systemd/system/{{ server_name }}.service
+  when: check_users_result.stdout != "1"
+  tags: lunar
+
+- name: daemon reload
+  systemd_service:
+    daemon_reload: true
+  when: check_users_result.stdout != "1"
+  tags: lunar
+
+- name: start and enable horizon systemd
+  systemd_service:
+    name: '{{ server_name }}'
+    enabled: true
+  when: check_users_result.stdout != "1"
+  tags: lunar

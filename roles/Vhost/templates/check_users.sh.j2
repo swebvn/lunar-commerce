@@ -1,0 +1,10 @@
+#!/bin/bash
+
+rad=`</dev/urandom tr -dc '12345qwertQWERTasdfgASDFGzxcvbZXCVB' | head -c2; echo ""`
+
+for i in `ls /home`; do
+        if [[ $i == "{{user_domain}}" ]]; then
+                #echo "$i$rad"
+                echo "1"
+        fi
+done

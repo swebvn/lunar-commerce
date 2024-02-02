@@ -1,0 +1,95 @@
+[{{ user_domain }}1]
+
+listen = /var/run/php-fpm.{{ server_name }}.sock1
+ ;listen.backlog = -1
+
+ ; Unix user/group of processes
+user = {{ user_domain }}
+group = {{ user_domain }}
+
+ ; Choose how the process manager will control the number of child processes.
+pm = dynamic
+pm.max_children = 100
+pm.start_servers = 32
+pm.min_spare_servers = 16
+pm.max_spare_servers = 32
+pm.max_requests = 200
+php_admin_flag[log_errors] = on
+slowlog = /home/{{ user_domain }}/domains/{{ server_name }}/logs/php-slow.log
+request_slowlog_timeout = 5s
+
+listen.owner = {{ user_domain }}
+listen.group = nobody
+listen.mode = 0666
+
+[{{ user_domain }}2]
+
+listen = /var/run/php-fpm.{{ server_name }}.sock2
+ ;listen.backlog = -1
+
+ ; Unix user/group of processes
+user = {{ user_domain }}
+group = {{ user_domain }}
+
+ ; Choose how the process manager will control the number of child processes.
+pm = dynamic
+pm.max_children = 100
+pm.start_servers = 32
+pm.min_spare_servers = 16
+pm.max_spare_servers = 32
+pm.max_requests = 200
+php_admin_flag[log_errors] = on
+slowlog = /home/{{ user_domain }}/domains/{{ server_name }}/logs/php-slow.log
+request_slowlog_timeout = 5s
+
+listen.owner = {{ user_domain }}
+listen.group = nobody
+listen.mode = 0666
+
+[{{ user_domain }}3]
+
+listen = /var/run/php-fpm.{{ server_name }}.sock3
+ ;listen.backlog = -1
+
+ ; Unix user/group of processes
+user = {{ user_domain }}
+group = {{ user_domain }}
+
+ ; Choose how the process manager will control the number of child processes.
+pm = dynamic
+pm.max_children = 100
+pm.start_servers = 32
+pm.min_spare_servers = 16
+pm.max_spare_servers = 32
+pm.max_requests = 200
+php_admin_flag[log_errors] = on
+slowlog = /home/{{ user_domain }}/domains/{{ server_name }}/logs/php-slow.log
+request_slowlog_timeout = 5s
+
+listen.owner = {{ user_domain }}
+listen.group = nobody
+listen.mode = 0666
+
+[{{ user_domain }}4]
+
+listen = /var/run/php-fpm.{{ server_name }}.sock4
+ ;listen.backlog = -1
+
+ ; Unix user/group of processes
+user = {{ user_domain }}
+group = {{ user_domain }}
+
+ ; Choose how the process manager will control the number of child processes.
+pm = dynamic
+pm.max_children = 100
+pm.start_servers = 32
+pm.min_spare_servers = 16
+pm.max_spare_servers = 32
+pm.max_requests = 200
+php_admin_flag[log_errors] = on
+slowlog = /home/{{ user_domain }}/domains/{{ server_name }}/logs/php-slow.log
+request_slowlog_timeout = 5s
+
+listen.owner = {{ user_domain }}
+listen.group = nobody
+listen.mode = 0666

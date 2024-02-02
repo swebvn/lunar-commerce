@@ -1,0 +1,141 @@
+---
+- name: random string
+  shell: head /dev/urandom | tr -dc A-Za-z0-9 | head -c 2 ; echo ''
+  delegate_to: localhost
+  register: rand
+  tags:
+    - vhost
+
+- name: copy script check domain exist
+  template:
+    src: check_domains.sh.j2
+    dest: /tmp/check_domains.sh
+    mode: 755
+  tags:
+    - vhost
+
+- name: running the script check domain exist
+  shell: bash /tmp/check_domains.sh
+  register: command_result
+  tags:
+    - vhost
+
+- debug: var=command_result
+  tags:
+    - vhost
+
+- name: copy script check user exist
+  template:
+    src: check_users.sh.j2
+    dest: /tmp/check_users.sh
+    mode: 755
+  tags:
+    - vhost
+
+- name: running the script check user exist
+  shell: bash /tmp/check_users.sh
+  register: check_users_result
+  tags:
+    - vhost
+
+- debug: var=check_users_result
+  tags:
+    - vhost
+
+- name: create user owner website
+  user:
+    name: '{{ user_domain }}'
+    create_home: no
+  ignore_errors: yes
+  when: check_users_result.stdout != "1"
+  tags:
+    - vhost
+
+
+- name: create user owner website
+  user:
+    name: '{{ user_domain }}{{rand.stdout}}'
+    create_home: no
+  ignore_errors: yes
+  tags:
+    - vhost
+  when: check_users_result.stdout == "1"
+
+- name: create group owner website
+  group:
+    name: '{{ group_domain }}'
+    state: present
+  ignore_errors: yes
+  when: check_users_result.stdout != "1"
+  tags:
+    - vhost
+
+- name: create group owner website
+  group:
+    name: '{{ group_domain }}{{rand.stdout}}'
+    state: present
+  ignore_errors: yes
+  when: check_users_result.stdout == "1"
+  tags:
+    - vhost
+
+- name: create folder contains website
+  file:
+    path: /home/{{ user_domain }}/domains/{{ server_name }}/public_html
+    state: directory
+    mode: 755
+    owner: '{{ user_domain }}'
+    group: '{{ group_domain }}'
+  when: check_users_result.stdout != "1"
+  tags:
+    - vhost
+
+- name: create folder contains website
+  file:
+    path: /home/{{ user_domain }}{{rand.stdout}}/domains/{{ server_name }}/public_html
+    state: directory
+    mode: 755
+    owner: '{{ user_domain }}{{rand.stdout}}'
+    group: '{{ group_domain }}{{rand.stdout}}'
+  when: check_users_result.stdout == "1"
+  tags:
+    - vhost
+
+- name: copy template vhost file
+  template:
+    src: vhost-2.conf.j2
+    dest: /etc/nginx/sites-available/{{ server_name }}.conf
+  ignore_errors: yes
+  when: check_users_result.stdout != "1"
+  tags:
+    - template-2
+
+- name: copy template vhost file
+  template:
+    src: vhost-3.conf.j2
+    dest: /etc/nginx/sites-available/{{ server_name }}.conf
+  ignore_errors: yes
+  when: check_users_result.stdout == "1"
+  tags:
+    - template-2
+
+- name: symbolic link nginx config vhost
+  shell: sudo ln -s /etc/nginx/sites-available/{{ server_name }}.conf /etc/nginx/sites-enabled/{{ server_name }}.conf
+
+- name: restart Nginx service
+  service: name=nginx state=restarted
+  ignore_errors: yes
+  tags:
+    - vhost
+    
+- name: chmod folder /home
+  shell: find /home/{{ user_domain }} -type d -exec chmod 755 {} \;
+  when: check_users_result.stdout != "1"
+  tags:
+     - vhost
+
+- name: chmod folder /home
+  shell: find /home/{{ user_domain }}{{rand.stdout}} -type d -exec chmod 755 {} \;
+  when: check_users_result.stdout == "1"
+  tags:
+     - vhost

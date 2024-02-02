@@ -1,0 +1,35 @@
+---
+- name: create PHP pool handle socket
+  template:
+    src: www.conf.j2
+    dest: /etc/php/8.2/fpm/pool.d/{{ server_name }}.conf
+  tags:
+    - template-phpfpm
+  when: check_users_result.stdout != "1"
+
+- name: create PHP pool handle socket
+  template:
+    src: www-2.conf.j2
+    dest: /etc/php/8.2/fpm/pool.d/{{ server_name }}.conf
+  tags:
+    - template-phpfpm
+  when: check_users_result.stdout == "1"
+
+- name: create folder contain log
+  file:
+    path: /home/{{ user_domain }}/domains/{{ server_name }}/logs
+    state: directory
+  tags:
+    - template-phpfpm
+  when: check_users_result.stdout != "1"
+
+- name: create folder contain log
+  file:
+    path: /home/{{ user_domain }}{{rand.stdout}}/domains/{{ server_name }}/logs
+    state: directory
+  tags:
+    - template-phpfpm
+  when: check_users_result.stdout == "1"
+
+- name: restart php8.2-fpm service
+  service: name=php8.2-fpm state=restarted

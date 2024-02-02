@@ -1,0 +1,43 @@
+---
+
+# - name: install the Python MySQLB module
+#   yum: name={{ item }} state=present
+#   with_items:
+#     - python
+#     - python-pip
+#     - python-setuptools
+#     - MySQL-python
+
+- name: create database name
+  mysql_db:
+    name: '{{ mysql_database }}'
+    state: present
+  when: check_users_result.stdout != "1"
+  tags: mysql
+
+- name: create database name
+  mysql_db:
+    name: '{{ mysql_database }}{{rand.stdout}}'
+    state: present
+  when: check_users_result.stdout == "1"
+  tags: mysql
+
+- name: create user database
+  mysql_user:
+    name: '{{ mysql_user }}'
+    password: '{{ mysql_pass }}'
+    #priv: '*.*:ALL'
+    priv: "{{ mysql_database }}.*:ALL"
+    state: present
+  when: check_users_result.stdout != "1"
+  tags: mysql
+
+- name: create user database
+  mysql_user:
+    name: '{{ mysql_user }}{{rand.stdout}}'
+    password: '{{ mysql_pass }}'
+    #priv: '*.*:ALL'
+    priv: "{{ mysql_database }}{{rand.stdout}}.*:ALL"
+    state: present
+  when: check_users_result.stdout == "1"
+  tags: mysql

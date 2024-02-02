@@ -1,0 +1,42 @@
+upstream {{ server_name }} {
+    #zone tcp_servers 64k;
+    server unix:/var/run/php-fpm.{{ server_name }}.sock1 weight=100 max_fails=3 fail_timeout=3;
+    server unix:/var/run/php-fpm.{{ server_name }}.sock2 weight=100 max_fails=3 fail_timeout=3;
+    server unix:/var/run/php-fpm.{{ server_name }}.sock3 weight=100 max_fails=3 fail_timeout=3;
+    server unix:/var/run/php-fpm.{{ server_name }}.sock4 weight=100 max_fails=3 fail_timeout=3;
+}
+
+server {	
+    listen 80;
+    server_name {{ server_name }} www.{{ server_name }};
+
+    root /home/{{ user_domain }}/domains/{{ server_name }}/public_html/public;
+
+    index index.php;
+
+    # [ debug | info | notice | warn | error | crit | alert | emerg ]
+    access_log /var/log/nginx/domains/{{ server_name }}.log main_ext;
+    error_log /var/log/nginx/domains/{{ server_name }}.error.log warn;
+
+
+    charset utf-8;
+ 
+    location / {
+        try_files $uri $uri/ /index.php?$query_string;
+    }
+ 
+    location = /favicon.ico { access_log off; log_not_found off; }
+    location = /robots.txt  { access_log off; log_not_found off; }
+ 
+    error_page 404 /index.php;
+ 
+    location ~ \.php$ {
+        fastcgi_pass {{ server_name }};
+        fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
+        include fastcgi_params;
+    }
+ 
+    location ~ /\.(?!well-known).* {
+        deny all;
+    }
+}

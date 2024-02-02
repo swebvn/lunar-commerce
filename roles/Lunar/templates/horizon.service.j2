@@ -1,0 +1,16 @@
+[Unit]
+Description=Laravel Horizon
+After=network.target
+
+[Service]
+User={{ user_domain }}
+Group={{ user_domain }}
+ExecStart=/usr/bin/php /home/{{ user_domain }}/domains/{{ server_name }}/public_html/artisan horizon
+Restart=always
+RestartSec=3
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=horizon
+
+[Install]
+WantedBy=multi-user.target

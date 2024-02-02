@@ -1,0 +1,87 @@
+[{{ user_domain }}{{rand.stdout}}1]
+
+listen = /var/run/php-fpm.{{ server_name }}.sock1
+ ;listen.backlog = -1
+
+ ; Unix user/group of processes
+user = {{ user_domain }}{{rand.stdout}}
+group = {{ user_domain }}{{rand.stdout}}
+
+ ; Choose how the process manager will control the number of child processes.
+pm = ondemand
+pm.max_children = 20
+pm.max_requests = 500
+pm.process_idle_timeout = 10s
+php_admin_flag[log_errors] = on
+slowlog = /home/{{ user_domain }}{{rand.stdout}}/domains/{{ server_name }}/logs/php-slow.log
+request_slowlog_timeout = 5s
+
+listen.owner = {{ user_domain }}{{rand.stdout}}
+listen.group = {{ user_domain }}{{rand.stdout}}
+listen.mode = 0666
+
+[{{ user_domain }}{{rand.stdout}}2]
+
+listen = /var/run/php-fpm.{{ server_name }}.sock2
+ ;listen.backlog = -1
+
+ ; Unix user/group of processes
+user = {{ user_domain }}{{rand.stdout}}
+group = {{ user_domain }}{{rand.stdout}}
+
+ ; Choose how the process manager will control the number of child processes.
+pm = ondemand
+pm.max_children = 20
+pm.max_requests = 500
+pm.process_idle_timeout = 10s
+php_admin_flag[log_errors] = on
+slowlog = /home/{{ user_domain }}{{rand.stdout}}/domains/{{ server_name }}/logs/php-slow.log
+request_slowlog_timeout = 5s
+
+listen.owner = {{ user_domain }}{{rand.stdout}}
+listen.group = {{ user_domain }}{{rand.stdout}}
+listen.mode = 0666
+
+[{{ user_domain }}{{rand.stdout}}3]
+
+listen = /var/run/php-fpm.{{ server_name }}.sock3
+ ;listen.backlog = -1
+
+ ; Unix user/group of processes
+user = {{ user_domain }}{{rand.stdout}}
+group = {{ user_domain }}{{rand.stdout}}
+
+ ; Choose how the process manager will control the number of child processes.
+pm = ondemand
+pm.max_children = 20
+pm.max_requests = 500
+pm.process_idle_timeout = 10s
+php_admin_flag[log_errors] = on
+slowlog = /home/{{ user_domain }}{{rand.stdout}}/domains/{{ server_name }}/logs/php-slow.log
+request_slowlog_timeout = 5s
+
+listen.owner = {{ user_domain }}{{rand.stdout}}
+listen.group = {{ user_domain }}{{rand.stdout}}
+listen.mode = 0666
+
+[{{ user_domain }}{{rand.stdout}}4]
+
+listen = /var/run/php-fpm.{{ server_name }}.sock4
+ ;listen.backlog = -1
+
+ ; Unix user/group of processes
+user = {{ user_domain }}{{rand.stdout}}
+group = {{ user_domain }}{{rand.stdout}}
+
+ ; Choose how the process manager will control the number of child processes.
+pm = ondemand
+pm.max_children = 20
+pm.max_requests = 500
+pm.process_idle_timeout = 10s
+php_admin_flag[log_errors] = on
+slowlog = /home/{{ user_domain }}{{rand.stdout}}/domains/{{ server_name }}/logs/php-slow.log
+request_slowlog_timeout = 5s
+
+listen.owner = {{ user_domain }}{{rand.stdout}}
+listen.group = {{ user_domain }}{{rand.stdout}}
+listen.mode = 0666
