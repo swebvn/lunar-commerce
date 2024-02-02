@@ -121,6 +121,9 @@
 
 - name: symbolic link nginx config vhost
   shell: sudo ln -s /etc/nginx/sites-available/{{ server_name }}.conf /etc/nginx/sites-enabled/{{ server_name }}.conf
+  when: check_users_result.stdout != "1"
+  tags:
+    - template-2
 
 - name: restart Nginx service
   service: name=nginx state=restarted
