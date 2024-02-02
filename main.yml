@@ -4,8 +4,8 @@
   become_method: sudo
   
   roles:
-    - Vhost
-    - PHP-FPM
+    #- Vhost
+    #- PHP-FPM
     - Mysql
     - Lunar
 
