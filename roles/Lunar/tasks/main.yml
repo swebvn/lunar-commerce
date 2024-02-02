@@ -70,13 +70,13 @@
   tags: lunar
 
 - name: daemon reload
-  systemd_service:
+  systemd:
     daemon_reload: true
   when: check_users_result.stdout != "1"
   tags: lunar
 
 - name: start and enable horizon systemd
-  systemd_service:
+  systemd:
     name: '{{ server_name }}'
     enabled: true
   when: check_users_result.stdout != "1"
