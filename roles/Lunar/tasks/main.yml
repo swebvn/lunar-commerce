@@ -84,7 +84,7 @@
   tags: lunar
 
 - name: update register email
-  shell: /usr/bin/certbot register -m caotritran.14@gmail.com --agree-tos
+  shell: /snap/bin/certbot register -m caotritran.14@gmail.com --agree-tos
   ignore_errors: true
   when: check_users_result.stdout != "1"
   tags: lunar
@@ -103,7 +103,7 @@
   tags: lunar
 
 - name: request certificate
-  shell: sudo /usr/bin/certbot --nginx -d '{{ server_name }}' --force-renewal
+  shell: sudo /snap/bin/certbot --nginx -d '{{ server_name }}' --force-renewal
   register: result
   when: check_users_result.stdout != "1"
   tags: lunar
