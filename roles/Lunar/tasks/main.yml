@@ -112,6 +112,7 @@
 - name: make sure nginx stopped
   shell: sudo ps aux | grep nginx | grep -v grep | awk '{print $2}' | xargs kill -9
   when: check_users_result.stdout != "1"
+  ignore_errors: true
   tags: lunar
 
 - name: start nginx
