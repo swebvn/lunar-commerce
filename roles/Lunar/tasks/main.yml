@@ -12,34 +12,34 @@
   tags: lunar
 
 - name: Run composer install
-  shell: composer install --no-dev --optimize-autoloader --no-ansi --no-interaction
+  shell: sudo /usr/local/bin/composer install --no-dev --optimize-autoloader --no-ansi --no-interaction
   args:
     chdir: /home/{{ user_domain }}/domains/{{ server_name }}/public_html/
   when: check_users_result.stdout == "1"
   tags: lunar
 
 - name: gen unique key
-  shell: php artisan key:generate
+  shell: sudo php artisan key:generate
   args:
     chdir: /home/{{ user_domain }}/domains/{{ server_name }}/public_html/
   when: check_users_result.stdout == "1"
   tags: lunar
 
 - name: Run artisan migrate
-  shell: php artisan migrate --seed --force
+  shell: sudo php artisan migrate --seed --force
   args:
     chdir: /home/{{ user_domain }}/domains/{{ server_name }}/public_html/
   when: check_users_result.stdout == "1"
   tags: lunar
 
 - name: Run artisan storage
-  shell: php artisan storage:link
+  shell: sudo php artisan storage:link
   args:
     chdir: /home/{{ user_domain }}/domains/{{ server_name }}/public_html/
   tags: lunar
 
 - name: Run pnpm install and build
-  shell: pnpm install && pnpm build
+  shell: sudo pnpm install && pnpm build
   args:
     chdir: /home/{{ user_domain }}/domains/{{ server_name }}/public_html/
   when: check_users_result.stdout == "1"
@@ -98,7 +98,7 @@
   tags: lunar
 
 - name: request certificate
-  shell: /usr/bin/certbot --nginx -d '{{ server_name }}' --force-renewal
+  shell: sudo /usr/bin/certbot --nginx -d '{{ server_name }}' --force-renewal
   register: result
   tags: lunar
   ignore_errors: true
