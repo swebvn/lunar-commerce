@@ -47,7 +47,7 @@
   tags: lunar
 
 - name: chown user
-  shell: chown {{ user_domain }}:{{ group_domain }} -hR /home/{{ user_domain }}/domains/{{ server_name }}/public_html/*
+  shell: sudo chown {{ user_domain }}:{{ group_domain }} -hR /home/{{ user_domain }}/domains/{{ server_name }}/public_html/* && sudo chown {{ user_domain }}:{{ group_domain }} -hR /home/{{ user_domain }}/domains/{{ server_name }}/public_html/.[^.]* 
   when: check_users_result.stdout != "1"
   tags: lunar
 
