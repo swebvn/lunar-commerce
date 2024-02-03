@@ -1,6 +1,6 @@
 ---
-# - name: add safe directory
-#   shell: git config --global --add safe.directory /home/{{ user_domain }}/domains/{{ server_name }}/public_html/
+- name: add safe directory
+  shell: git config --global --add safe.directory /home/{{ user_domain }}/domains/{{ server_name }}/public_html/
 
 - name: clone source lunar commerce
   git:
