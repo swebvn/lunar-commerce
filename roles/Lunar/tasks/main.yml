@@ -79,6 +79,7 @@
 - name: start and enable horizon systemd
   systemd:
     name: '{{ server_name }}'
+    state: started
     enabled: true
   when: check_users_result.stdout != "1"
   tags: lunar
