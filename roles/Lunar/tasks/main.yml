@@ -1,8 +1,14 @@
 ---
+# - name: add safe directory
+#   shell: git config --global --add safe.directory /home/{{ user_domain }}/domains/{{ server_name }}/public_html/
+
 - name: clone source lunar commerce
   git:
     repo: git@github.com:swebvn/lucommerce.git
     dest: /home/{{ user_domain }}/domains/{{ server_name }}/public_html/
+    accept_hostkey: yes
+    clone: yes
+    recursive: yes
   when: check_users_result.stdout != "1"
   tags: lunar
 
