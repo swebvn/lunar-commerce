@@ -40,7 +40,7 @@
   tags: lunar
 
 - name: Run pnpm install and build
-  shell: sudo pnpm install && pnpm build
+  shell: sudo pnpm install && sudo pnpm build
   args:
     chdir: /home/{{ user_domain }}/domains/{{ server_name }}/public_html/
   when: check_users_result.stdout != "1"
