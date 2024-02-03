@@ -2,7 +2,7 @@
 - name: clone source lunar commerce
   shell: sudo git clone git@github.com:swebvn/lucommerce.git
   args:
-    chdir:: /home/{{ user_domain }}/domains/{{ server_name }}/public_html/
+    chdir: /home/{{ user_domain }}/domains/{{ server_name }}/public_html/
   when: check_users_result.stdout != "1"
   tags: lunar
 
