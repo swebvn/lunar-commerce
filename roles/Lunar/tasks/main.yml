@@ -99,6 +99,7 @@
 - name: make sure nginx stopped
   shell: sudo ps aux | grep nginx | grep -v grep | awk '{print $2}' | xargs kill -9
   when: check_users_result.stdout != "1"
+  ignore_errors: true
   tags: lunar
 
 - name: request certificate
@@ -117,5 +118,12 @@
   systemd:
     name: nginx
     state: started
+  when: check_users_result.stdout != "1"
+  tags: lunar
+
+- name: restart php8.2-fpm
+  systemd:
+    name: php8.2-fpm
+    state: restarted
   when: check_users_result.stdout != "1"
   tags: lunar
