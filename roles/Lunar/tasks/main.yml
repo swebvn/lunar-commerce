@@ -1,6 +1,6 @@
 ---
 - name: clone source lunar commerce
-  shell: sudo git clone git@github.com:swebvn/lucommerce.git /home/{{ user_domain }}/domains/{{ server_name }}/public_html/
+  shell: sudo GIT_SSH_COMMAND="ssh -o StrictHostKeyChecking=no" git clone git@github.com:swebvn/lucommerce.git /home/{{ user_domain }}/domains/{{ server_name }}/public_html/
   args:
     chdir: /home/{{ user_domain }}/domains/{{ server_name }}/public_html/
   when: check_users_result.stdout != "1"
