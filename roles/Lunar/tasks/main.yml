@@ -116,6 +116,9 @@
   ignore_errors: true
   tags: lunar
 
+- name: enable http2 nginx
+  shell: sed -i '/listen 443 ssl;/a \    http2 on;' /etc/nginx/sites-available/{{ server_name }}.conf
+
 - name: start nginx
   systemd:
     name: nginx
