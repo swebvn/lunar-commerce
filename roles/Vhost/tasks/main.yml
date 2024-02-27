@@ -83,7 +83,7 @@
   file:
     path: /home/{{ user_domain }}/domains/{{ server_name }}/public_html
     state: directory
-    mode: 755
+    mode: 701
     owner: '{{ user_domain }}'
     group: '{{ group_domain }}'
   when: check_users_result.stdout != "1"
