@@ -101,6 +101,23 @@
   tags:
     - vhost
 
+- name: change permission folder
+  file:
+    path: /home/{{ user_domain }}
+    mode: 701
+  when: check_users_result.stdout != "1"
+  tags:
+    - vhost
+
+- name: change permission folder
+  file:
+    file:
+    path: /home/{{ user_domain }}
+    mode: 701
+  when: check_users_result.stdout == "1"
+  tags:
+    - vhost
+
 - name: copy template vhost file
   template:
     src: vhost-2.conf.j2
