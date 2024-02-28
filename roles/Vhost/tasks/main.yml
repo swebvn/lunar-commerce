@@ -102,17 +102,13 @@
     - vhost
 
 - name: change permission folder
-  file:
-    path: /home/{{ user_domain }}
-    mode: '0701'
+  shell: sudo chmod 701 /home/{{ user_domain }}
   when: check_users_result.stdout != "1"
   tags:
     - vhost
 
 - name: change permission folder
-  file:
-    path: /home/{{ user_domain }}
-    mode: '0701'
+  shell: sudo chmod 701 /home/{{ user_domain }}
   when: check_users_result.stdout == "1"
   tags:
     - vhost
