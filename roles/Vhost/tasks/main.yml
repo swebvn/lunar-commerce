@@ -100,18 +100,6 @@
   when: check_users_result.stdout == "1"
   tags:
     - vhost
-
-- name: change permission folder
-  shell: sudo chmod 701 /home/{{ user_domain }}
-  when: check_users_result.stdout != "1"
-  tags:
-    - vhost
-
-- name: change permission folder
-  shell: sudo chmod 701 /home/{{ user_domain }}
-  when: check_users_result.stdout == "1"
-  tags:
-    - vhost
     
 - name: copy template vhost file
   template:
@@ -154,3 +142,15 @@
   when: check_users_result.stdout == "1"
   tags:
      - vhost
+
+- name: change permission folder
+  shell: sudo chmod 701 /home/{{ user_domain }}
+  when: check_users_result.stdout != "1"
+  tags:
+    - vhost
+
+- name: change permission folder
+  shell: sudo chmod 701 /home/{{ user_domain }}
+  when: check_users_result.stdout == "1"
+  tags:
+    - vhost
