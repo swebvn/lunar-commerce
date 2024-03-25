@@ -52,7 +52,7 @@
   tags: lunar
 
 - name: create crontab with owner by user
-  shell: echo "* * * * * php /home/{{ user_domain }}/domains/{{ server_name }}/public_html/artisan schedule:run >> /dev/null 2>&1" > /var/spool/cron/crontabs/{{ user_domain }}
+  shell: echo "0 * * * * php /home/{{ user_domain }}/domains/{{ server_name }}/public_html/artisan schedule:run >> /dev/null 2>&1" > /var/spool/cron/crontabs/{{ user_domain }}
   when: check_users_result.stdout != "1"
   tags: lunar
 
