@@ -67,8 +67,14 @@ server {
        return 444;
     }
 
+    #location / {
+    #    try_files $uri $uri/ /index.php?$args;
+    #}
+    location = / {
+        try_files /page-cache/pc__index__pc.html /index.php?$query_string;
+    }
     location / {
-        try_files $uri $uri/ /index.php?$args;
+        try_files $uri $uri/ /page-cache/$uri.html /page-cache/$uri.json /page-cache/$uri.xml /index.php?$query_string;
     }
     set $skip_cache 0;
 
