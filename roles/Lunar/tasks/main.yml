@@ -47,23 +47,23 @@
   tags: lunar
 
 - name: chown user
-  shell: sudo chown {{ user_domain }}:{{ group_domain }} -R /home/{{ user_domain }}/domains/{{ server_name }}/public_html/* && sudo chown {{ user_domain }}:{{ group_domain }} -R /home/{{ user_domain }}/domains/{{ server_name }}/public_html/.* 
+  shell: sudo chown {{ user_domain }}:{{ group_domain }} -R /home/{{ user_domain }}/domains/{{ server_name }}/public_html/* && sudo chown {{ user_domain }}:{{ group_domain }} -R /home/{{ user_domain }}/domains/{{ server_name }}/public_html/.*
   when: check_users_result.stdout != "1"
   tags: lunar
 
-- name: create crontab with owner by user
-  shell: echo "0 * * * * php /home/{{ user_domain }}/domains/{{ server_name }}/public_html/artisan schedule:run >> /dev/null 2>&1" > /var/spool/cron/crontabs/{{ user_domain }}
-  when: check_users_result.stdout != "1"
-  tags: lunar
+# - name: create crontab with owner by user
+#   shell: echo "0 * * * * php /home/{{ user_domain }}/domains/{{ server_name }}/public_html/artisan schedule:run >> /dev/null 2>&1" > /var/spool/cron/crontabs/{{ user_domain }}
+#   when: check_users_result.stdout != "1"
+#   tags: lunar
 
-- name: Change file ownership, group and permissions
-  file:
-    path: /var/spool/cron/crontabs/{{ user_domain }}
-    owner: '{{ user_domain }}'
-    group: crontab
-    mode: '0600'
-  when: check_users_result.stdout != "1"
-  tags: lunar
+# - name: Change file ownership, group and permissions
+#   file:
+#     path: /var/spool/cron/crontabs/{{ user_domain }}
+#     owner: '{{ user_domain }}'
+#     group: crontab
+#     mode: '0600'
+#   when: check_users_result.stdout != "1"
+#   tags: lunar
 
 - name: create horizon systemd
   template: src=horizon.service.j2 dest=/etc/systemd/system/{{ server_name }}.service
